@@ -1,0 +1,31 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
+<script type="application/javascript">
+    var prod_data = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: {
+            url: 'https://storage.googleapis.com/autocomplete-211416-top100/top100_test.json',
+            ajax: {
+                type: 'GET',
+                dataType: 'jsonp'
+            }
+
+        },
+        remote: {
+            url: '/remotesearch?q=%QUERY',
+            wildcard: '%QUERY'
+        }
+    });
+    prod_data.initialize();
+    $('#searchbox .typeahead').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'name',
+            source: prod_data.ttAdapter()
+        });
+</script>
